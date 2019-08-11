@@ -41,6 +41,10 @@ ACCELERATOR_COUNT = 1
 vm: default
 	gcloud compute instances start --zone ${ZONE} ${INSTANCE_NAME}
 
+gpumon:
+	gcloud compute ssh --project ${PROJECT} --zone ${ZONE} ${INSTANCE_NAME} --command "nvidia-smi -l 1"
+
+
 # lab uri:       http://localhost:8080/lab?
 lab: default
 	gcloud compute ssh --zone ${ZONE} ${INSTANCE_NAME} -- -L 8080:localhost:8080
@@ -61,6 +65,7 @@ deploy_lab: default
 
 upload:
 	gsutil cp fine_tuned/export.pkl gs://fastai-nlp/fine_tuned
+
 
 
 # docker
