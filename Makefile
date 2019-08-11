@@ -17,10 +17,9 @@ build_app: default
 	gcloud builds submit --config app_image/cloudbuild.yaml --timeout=1000s app_image
 
 deploy_hello: default
-	gcloud beta run deploy hello_run \
+	gcloud alpha run deploy hellorun \
 	--image gcr.io/${PROJECT}/hello_run:latest \
 	--region us-central1 \
-	--platform managed
 
 deploy_app: default
 	gcloud beta run deploy ${RUN_NAME} \
@@ -78,3 +77,13 @@ local_dock:
 
 shell:
 	docker run -it gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest sh
+
+
+gcloud_update:
+	sudo apt-get update && sudo apt-get --only-upgrade install kubectl \
+	google-cloud-sdk google-cloud-sdk-app-engine-grpc google-cloud-sdk-pubsub-emulator \
+	google-cloud-sdk-app-engine-go google-cloud-sdk-cloud-build-local \
+	google-cloud-sdk-datastore-emulator google-cloud-sdk-app-engine-python \
+	google-cloud-sdk-cbt google-cloud-sdk-bigtable-emulator \
+	google-cloud-sdk-app-engine-python-extras google-cloud-sdk-datalab \
+	google-cloud-sdk-app-engine-java
