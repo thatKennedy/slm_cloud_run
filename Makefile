@@ -41,8 +41,8 @@ ACCELERATOR_COUNT = 1
 vm: default
 	gcloud compute instances start --zone ${ZONE} ${INSTANCE_NAME}
 
+# lab uri:       http://localhost:8080/lab?
 lab: default
-	xdg-open http://localhost:8080
 	gcloud compute ssh --zone ${ZONE} ${INSTANCE_NAME} -- -L 8080:localhost:8080
 
 stop: default
@@ -64,16 +64,16 @@ upload:
 
 
 # docker
-pull: default
+pull_app: default
 	gcloud auth configure-docker
 	docker pull gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest
 
-lab_dock: default
-	xdg-open http://localhost:${DOCKER_PORT}
-	gcloud compute ssh --zone ${ZONE} ${INSTANCE_NAME} -- -L ${DOCKER_PORT}:localhost:${DOCKER_PORT}
-
 local_dock:
 	docker run -p ${DOCKER_PORT}:8080 -e PORT=8080 gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest
+
+# dock uri:       http://localhost:8081
+ssh_dock: default
+	gcloud compute ssh --zone ${ZONE} ${INSTANCE_NAME} -- -L ${DOCKER_PORT}:localhost:${DOCKER_PORT}
 
 shell:
 	docker run -it gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest sh
