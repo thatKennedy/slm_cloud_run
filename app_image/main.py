@@ -18,29 +18,27 @@ class IMBDLanguageModelDemo(Resource):
         return output
 
 
-class IMBDLanguageModel_25n_words(Resource):
+class IMBDLanguageModel_3s_words(Resource):
 
     def get(self):
 
         n_words = 25
+        n_sentences = 3
         temp = .75
 
         parser = reqparse.RequestParser()
         parser.add_argument('start_txt')
         request_body = parser.parse_args()
 
-        text = "My favorite part was when"
+        if isinstance(request_body, str):
+            request_body = json.loads(request_body)
+        text = requests.get(request_body['start_txt'], stream=True)
 
-        try:
-            text = dict(request_body['start_txt'])
-        except:
-            pass
-
-        return join(learner.predict(text, n_words, temperature=temp))
-
+        output = ("\n".join(learner.predict(text, n_words, temperature=temp) for _ in range(n_sentences)))
+        return output
 
 api.add_resource(IMBDLanguageModelDemo, '/')
-api.add_resource(IMBDLanguageModel_25n_words, '/25nw')
+api.add_resource(IMBDLanguageModel_3s_words, '/3')
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
