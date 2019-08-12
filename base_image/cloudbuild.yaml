@@ -2,6 +2,6 @@ steps:
 - name: 'gcr.io/cloud-builders/gsutil'
   args: ['cp', 'gs://fastai-nlp/exported_models/language_model_learner/export.pkl', './language_model_learner/export.pkl']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/fast-aing/slmest', '.']
+  args: ['build', '-t', 'gcr.io/fast-aing/base_slm', '.']
 
-images: ['gcr.io/fast-aing/slmest']
+images: ['gcr.io/fast-aing/base_slm']

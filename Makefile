@@ -1,20 +1,20 @@
 PROJECT = fast-aing
 DOCKER_PORT = 8081
-CONTAINER_IMAGE = slmest
-RUN_NAME = slmer
+CONTAINER_IMAGE = app_image
+RUN_NAME = a1runner
 RUN_MEM = 2Gi
 
 default:
 	gcloud config set project ${PROJECT}
 
 build_base: default
-	gcloud builds submit --tag gcr.io/${PROJECT}/base_slm --timeout=1000s base_image
+	gcloud builds submit --config base_image/cloudbuild.yaml --timeout=1000s base_image
 
 build_hello:
 	gcloud builds submit --tag gcr.io/${PROJECT}/hello_run --timeout=1000s hello_image
 
 build_app: default
-	gcloud builds submit --config app_image/cloudbuild.yaml --timeout=1000s app_image
+	gcloud builds submit --tag gcr.io/${PROJECT}/app_image --timeout=1000s app_image
 
 deploy_hello: default
 	gcloud alpha run deploy hellorun \
@@ -29,6 +29,7 @@ deploy_app: default
 	--region us-central1 \
 	--platform managed
 
+bda: default build_app deploy_app
 
 # jupyter lab commands: client side
 #ZONE = us-central1-a
