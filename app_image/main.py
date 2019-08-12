@@ -35,12 +35,8 @@ class IMBDLanguageModel_25n_words(Resource):
             text = dict(request_body['start_txt'])
         except:
             pass
-        logger.info("Calling prediction on model")
-        start_time = time.time()
-        output = join(learner.predict(text, n_words, temperature=temp))
-        logger.info("--- Inference time: %s seconds ---" % (time.time() - start_time))
 
-        return output
+        return join(learner.predict(text, n_words, temperature=temp))
 
 
 api.add_resource(IMBDLanguageModelDemo, '/')
