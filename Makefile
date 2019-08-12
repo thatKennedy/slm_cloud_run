@@ -69,7 +69,7 @@ upload:
 
 
 # docker
-pull_app: default
+pull_img: default
 	gcloud auth configure-docker
 	docker pull gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest
 

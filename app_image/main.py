@@ -3,12 +3,12 @@ from flask import Flask
 from fastai.text import load_learner
 
 #download_blob('fast-aing_cloudbuild', 'fastai_models/fine_tuned/export.pkl', 'fine_tuned/export.pkl')
-learner = load_learner('fine_tuned')
+learner = load_learner('language_model_learner')
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
+def preset_language_model():
     text = "I liked this movie because"
     n_words = 25
     n_sentences = 4
