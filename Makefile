@@ -20,6 +20,7 @@ deploy_hello: default
 	gcloud alpha run deploy hellorun \
 	--image gcr.io/${PROJECT}/hello_run:latest \
 	--region us-central1 \
+	--platform managed
 
 deploy_app: default
 	gcloud beta run deploy ${RUN_NAME} \
@@ -69,12 +70,21 @@ upload:
 
 
 # docker
-pull_img: default
+pull_app_img: default
 	gcloud auth configure-docker
 	docker pull gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest
 
-local_dock:
+
+pull_hello_img: default
+	gcloud auth configure-docker
+	docker pull gcr.io/${PROJECT}/hello_run:latest
+
+local_app_dock:
 	docker run -p ${DOCKER_PORT}:8080 -e PORT=8080 gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest
+
+local_hello_dock:
+	docker run -p ${DOCKER_PORT}:8080 -e PORT=8080 gcr.io/${PROJECT}/hello_run:latest
+
 
 # dock uri:       http://localhost:8081
 ssh_dock: default
