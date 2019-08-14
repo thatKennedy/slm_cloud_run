@@ -27,7 +27,8 @@ deploy_app: default
 	--image gcr.io/${PROJECT}/${CONTAINER_IMAGE}:latest \
 	--memory ${RUN_MEM} \
 	--region us-central1 \
-	--platform managed
+	--platform managed \
+	--concurrency=1
 
 bda: default build_app deploy_app
 

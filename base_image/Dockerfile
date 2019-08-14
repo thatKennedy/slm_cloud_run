@@ -11,3 +11,4 @@ RUN pip install -r requirements.txt
 
 # Include the fast ai models the cloudbuild.yaml brought in with gsutil
 COPY language_model_learner language_model_learner
+COPY language_classifier_learner language_classifier_learner
