@@ -13,7 +13,8 @@ class IMDBLanguageModelDemo(Resource):
     def get(self):
         learner = load_learner('language_model_learner')
 
-        text = "My favorite part was when"
+        #text = "My favorite part was when"
+        text = "The best scene was"
         n_words = 25
         n_sentences = 12
         temp = .75
