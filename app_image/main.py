@@ -6,19 +6,20 @@ from flask_restful import Resource, Api, reqparse
 app = Flask(__name__)
 api = Api(app)
 
-#learner_clf = load_learner('language_classifier_learner')
+# learner_clf = load_learner('language_classifier_learner')
 
 
 class IMDBLanguageModelDemo(Resource):
     def get(self):
         learner = load_learner('language_model_learner')
 
-        #text = "My favorite part was when"
-        text = "The best scene was"
-        n_words = 25
-        n_sentences = 12
+        text = "My favorite part was when"
+        # text = "The best scene was  "
+        n_words = 50
+        n_sentences = 6
         temp = .75
-        output = ("\n".join(learner.predict(text, n_words, temperature=temp) for _ in range(n_sentences)))
+        sep_string = ' ============================================================================XXXXX>>>>>>>>>'
+        output = sep_string.join(learner.predict(text, n_words, temperature=temp) for i in range(n_sentences))
         return output
 
 
@@ -47,9 +48,30 @@ class IMDBLanguageModelParse(Resource):
         output = ("\n".join(learner.predict(text, n_words, temperature=temp) for _ in range(n_sentences)))
         return output
 
+
+class IMBDLanguageModelClass(Resource):
+
+    def get(self):
+
+        learner_clf = load_learner('language_classifier_learner')
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('review')
+        request_body = parser.parse_args()
+        try:
+            if isinstance(request_body, str):
+                request_body = json.loads(request_body)
+            text = request_body['review']
+        except:
+            text = "what a wonderful film"
+
+        output = learner_clf.predict(text)
+        return str(output)
+
+
 api.add_resource(IMDBLanguageModelDemo, '/')
 api.add_resource(IMDBLanguageModelParse, '/lm')
-#api.add_resource(IMBDLanguageModelClass, '/rc')
+api.add_resource(IMBDLanguageModelClass, '/rc')
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
